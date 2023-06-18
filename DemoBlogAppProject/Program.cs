@@ -1,7 +1,14 @@
+using DemoBlogAppProject.DB;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<Appdbcontext>(options =>
+    options.UseSqlServer(builder.Configuration.
+    GetConnectionString("DemoBlogConnectionString")));
 
 var app = builder.Build();
 
