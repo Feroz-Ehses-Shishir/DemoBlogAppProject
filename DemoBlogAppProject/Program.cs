@@ -1,4 +1,5 @@
 using DemoBlogAppProject.DB;
+using DemoBlogAppProject.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<Appdbcontext>(options =>
     options.UseSqlServer(builder.Configuration.
     GetConnectionString("DemoBlogConnectionString")));
+
+builder.Services.AddScoped<ITagRepository, TagRepository>();
 
 var app = builder.Build();
 

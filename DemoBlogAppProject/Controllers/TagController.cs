@@ -1,19 +1,20 @@
-﻿using DemoBlogAppProject.DB;
+﻿using Azure;
+using DemoBlogAppProject.DB;
 using DemoBlogAppProject.Models.DomainModel;
 using DemoBlogAppProject.Models.EditModel;
 using DemoBlogAppProject.Models.ViewModel;
+using DemoBlogAppProject.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel;
 
 namespace DemoBlogAppProject.Controllers
 {
     public class TagController : Controller
     {
-        private readonly Appdbcontext db;
+        private readonly ITagRepository tagRep;
 
-        public TagController(Appdbcontext  db)
+        public TagController(ITagRepository tagRep)
         {
-            this.db = db;
+            this.tagRep = tagRep;
         }
 
         [HttpGet]
@@ -31,8 +32,7 @@ namespace DemoBlogAppProject.Controllers
                 DisplayName = x.DisplayName
             };
 
-            await db.Tags.AddAsync(tag);
-            await db.SaveChangesAsync();
+            await tagRep.AddAsync(tag);
 
             return RedirectToAction("Show");
         }
@@ -40,7 +40,7 @@ namespace DemoBlogAppProject.Controllers
         [HttpGet]
         public async Task<IActionResult> Show()
         {
-            var tag = db.Tags.ToList();
+            var tag = await tagRep.GetAllAsync();
 
             return View(tag);
         }
@@ -48,7 +48,7 @@ namespace DemoBlogAppProject.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid Id)
         {
-            var x = await db.Tags.FindAsync(Id);
+            var x = await tagRep.GetAsync(Id);
 
             var tag = new editTag
             {
@@ -63,16 +63,17 @@ namespace DemoBlogAppProject.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(editTag x)
         {
-            
-            var newTag = await db.Tags.FindAsync(x.Id);
-
-            if(newTag!=null)
+            var tag = new Tag
             {
-                newTag.Name = x.Name;
-                newTag.DisplayName = x.DisplayName;
+                Id = x.Id,
+                Name = x.Name,
+                DisplayName = x.DisplayName
+            };
 
-                await db.SaveChangesAsync();
+            var newTag = await tagRep.UpdateAsync(tag);
 
+            if (newTag!=null)
+            {
                 return RedirectToAction("Show");
             }
 
@@ -82,13 +83,10 @@ namespace DemoBlogAppProject.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(editTag x)
         {
-            var tag = await db.Tags.FindAsync(x.Id);
+            var tag = await tagRep.DeleteAsync(x.Id);
 
             if (tag != null)
             {
-                db.Tags.Remove(tag);
-                await db.SaveChangesAsync();
-
                 return RedirectToAction("Show");
             }
 
