@@ -1,6 +1,4 @@
-﻿using Azure;
-using DemoBlogAppProject.DB;
-using DemoBlogAppProject.Models.DomainModel;
+﻿using DemoBlogAppProject.Models.DomainModel;
 using DemoBlogAppProject.Models.EditModel;
 using DemoBlogAppProject.Models.ViewModel;
 using DemoBlogAppProject.Repositories;

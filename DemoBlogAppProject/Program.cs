@@ -12,6 +12,7 @@ builder.Services.AddDbContext<Appdbcontext>(options =>
     GetConnectionString("DemoBlogConnectionString")));
 
 builder.Services.AddScoped<ITagRepository, TagRepository>();
+builder.Services.AddScoped<IPostRepository, PostRepository>();
 
 var app = builder.Build();
 
