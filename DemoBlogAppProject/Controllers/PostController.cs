@@ -66,5 +66,13 @@ namespace DemoBlogAppProject.Controllers
 
             return RedirectToAction("Add");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Show()
+        {
+            var x = await pr.GetAllAsync();
+
+            return View(x);
+        }
     }
 }
