@@ -44,7 +44,7 @@ namespace DemoBlogAppProject.Repositories
 
         public async Task<Post?> GetAsync(Guid Id)
         {
-            return await db.Posts.FindAsync(Id);
+            return await db.Posts.Include(x => x.Tags).FirstOrDefaultAsync(x => x.Id == Id);
         }
 
         public async Task<Post?> UpdateAsync(Post post)

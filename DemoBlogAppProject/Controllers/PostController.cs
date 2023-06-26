@@ -1,4 +1,5 @@
 ﻿using DemoBlogAppProject.Models.DomainModel;
+using DemoBlogAppProject.Models.EditModel;
 using DemoBlogAppProject.Models.ViewModel;
 using DemoBlogAppProject.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -73,6 +74,16 @@ namespace DemoBlogAppProject.Controllers
             var x = await pr.GetAllAsync();
 
             return View(x);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid Id)
+        {
+            var x = await pr.GetAsync(Id);
+
+            
+
+            return View();
         }
     }
 }
