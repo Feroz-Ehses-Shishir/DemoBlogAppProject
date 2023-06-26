@@ -39,7 +39,7 @@ namespace DemoBlogAppProject.Repositories
 
         public async Task<IEnumerable<Post>> GetAllAsync()
         {
-            return await db.Posts.ToListAsync();
+            return await db.Posts.Include(x => x.Tags).ToListAsync();
         }
 
         public async Task<Post?> GetAsync(Guid Id)

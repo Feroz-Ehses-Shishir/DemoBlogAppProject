@@ -1,5 +1,6 @@
 ﻿@model List<DemoBlogAppProject.Models.DomainModel.Post>
 
+
 <div class="bg-secondary bg-opacity-10 py-2">
     <div class="container">
         <h1>Show All Post - [Admin]</h1>
@@ -22,10 +23,10 @@
                     <td>@x.Id</td>
                     <td>@x.Heading</td>
                     <td>
-                        <div>
-                            @foreach (var t in x.Tags)
+                        <div class="d-flex">
+                            @foreach (var i in x.Tags)
                             {
-                                <span>@t.Name</span>
+                                <span class="badge bg-secondary me-1">@i.Name</span>
                             }
                         </div>
                     </td>
