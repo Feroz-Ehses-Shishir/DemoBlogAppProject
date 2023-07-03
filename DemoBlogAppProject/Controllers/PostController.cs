@@ -112,5 +112,8 @@ namespace DemoBlogAppProject.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Edit()
+        {
+            int i = 0;
+        }
     }
 }
