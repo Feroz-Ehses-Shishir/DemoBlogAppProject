@@ -80,10 +80,37 @@ namespace DemoBlogAppProject.Controllers
         public async Task<IActionResult> Edit(Guid Id)
         {
             var x = await pr.GetAsync(Id);
+            var t = await tr.GetAllAsync();
 
-            
+            if(x != null)
+            {
+                var model = new editPost
+                {
+                    Id = x.Id,
+                    Heading = x.Heading,
+                    PageTitle = x.PageTitle,
+                    Content = x.Content,
+                    Author = x.Author,
+                    FeaturedImageUrl = x.FeaturedImageUrl,
+                    UrlHandle = x.UrlHandle,
+                    ShortDescription = x.ShortDescription,
+                    PublishedDate = x.PublishedDate,
+                    Visible = x.Visible,
+                    Tags = t.Select(xx => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+                    {
+                        Text = xx.Name,
+                        Value = xx.Id.ToString()
+                    }),
+                    TagId = x.Tags.Select(xx => xx.Id.ToString()).ToArray()
+                };
 
-            return View();
+                return View(model);
+            }
+
+            return View(null);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit()
     }
 }
