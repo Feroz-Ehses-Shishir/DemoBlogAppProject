@@ -111,9 +111,60 @@ namespace DemoBlogAppProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit()
+        public async Task<IActionResult> Edit(editPost x)
         {
-            int i = 0;
+            var post = new Post
+            {
+                Id = x.Id,
+                Heading = x.Heading,
+                PageTitle = x.PageTitle,
+                Content = x.Content,
+                Author = x.Author,
+                FeaturedImageUrl = x.FeaturedImageUrl,
+                UrlHandle = x.UrlHandle,
+                ShortDescription = x.ShortDescription,
+                PublishedDate = x.PublishedDate,
+                Visible = x.Visible,
+            };
+
+            var tg = new List<Tag>();
+            foreach (var t in x.TagId)
+            {
+                var temp = Guid.Parse(t);
+                var ts = await tr.GetAsync(temp);
+
+                if (ts != null)
+                {
+                    tg.Add(ts);
+                }
+
+            }
+            post.Tags = tg;
+
+            // Submit to repo
+            var f = await pr.UpdateAsync(post);
+
+            if(f!=null) 
+            {
+                //success
+                return RedirectToAction("Show");
+            }
+
+            //error
+            return RedirectToAction("Show");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(editPost x)
+        {
+            var d = await pr.DeleteAsync(x.Id);
+
+            if (d != null)
+            {
+                return RedirectToAction("Show");
+            }
+
+            return RedirectToAction("Show");
         }
     }
 }
