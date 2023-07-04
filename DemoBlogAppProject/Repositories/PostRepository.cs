@@ -49,11 +49,21 @@ namespace DemoBlogAppProject.Repositories
 
         public async Task<Post?> UpdateAsync(Post post)
         {
-            var newPost = await db.Posts.FindAsync(post.Id);
+            var newPost = await db.Posts.Include(x => x.Tags).FirstOrDefaultAsync(x => x.Id == post.Id);
 
             if (newPost != null)
             {
-                
+                newPost.Id = post.Id;
+                newPost.Heading = post.Heading;
+                newPost.PageTitle = post.PageTitle;
+                newPost.Content = post.Content;
+                newPost.ShortDescription = post.ShortDescription;
+                newPost.Author = post.Author;
+                newPost.FeaturedImageUrl = post.FeaturedImageUrl;
+                newPost.UrlHandle = post.UrlHandle;
+                newPost.Visible = post.Visible;
+                newPost.PublishedDate = post.PublishedDate;
+                newPost.Tags = post.Tags;
 
                 await db.SaveChangesAsync();
 

@@ -8,32 +8,40 @@
 </div>
 
 <div class="container py-5">
-    <table class="table">
-        <thead>
-            <tr>
-                <td>Id</td>
-                <td>Heading</td>
-                <td>Tags</td>
-                <td> </td>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach(var x in Model)
-            {
+
+    @if(Model != null && Model.Any())
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@x.Id</td>
-                    <td>@x.Heading</td>
-                    <td>
-                        <div class="d-flex">
-                            @foreach (var i in x.Tags)
-                            {
-                                <span class="badge bg-secondary me-1">@i.Name</span>
-                            }
-                        </div>
-                    </td>
-                    <td><a asp-area="" asp-controller="Post" asp-action="Edit" asp-route-id="@x.Id">Edit</a></td>
+                    <td>Id</td>
+                    <td>Heading</td>
+                    <td>Tags</td>
+                    <td> </td>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var x in Model)
+                {
+                    <tr>
+                        <td>@x.Id</td>
+                        <td>@x.Heading</td>
+                        <td>
+                            <div class="d-flex">
+                                @foreach (var i in x.Tags)
+                                {
+                                    <span class="badge bg-secondary me-1">@i.Name</span>
+                                }
+                            </div>
+                        </td>
+                        <td><a asp-area="" asp-controller="Post" asp-action="Edit" asp-route-id="@x.Id">Edit</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No Posts Found!</p>
+    }
 </div>
